@@ -1,0 +1,92 @@
+services:
+  # ── Symfony API (FrankenPHP) ──────────────────────────
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+      target: dev
+    ports:
+      - "8080:80"
+    environment:
+      APP_ENV: dev
+      APP_DEBUG: "1"
+      APP_SECRET: dev_secret_not_for_production
+      APP_SHARE_DIR: var/share
+      DATABASE_URL: postgresql://draw:draw@database:5432/draw?serverVersion=16
+      MERCURE_URL: http://mercure/.well-known/mercure
+      MERCURE_PUBLIC_URL: http://localhost:3001/.well-known/mercure
+      MERCURE_JWT_SECRET: dev_mercure_secret_change_me
+      DEFAULT_URI: http://localhost:8080
+      CORS_ALLOW_ORIGIN: http://localhost:3000
+    volumes:
+      - ./backend:/app
+      - backend_uploads:/app/var/share
+    networks:
+      - app_network
+    depends_on:
+      database:
+        condition: service_healthy
+
+  # ── Next.js Frontend ─────────────────────────────────
+  frontend:
+    image: node:22-alpine
+    working_dir: /app
+    command: sh -c "npm install && npm run dev -- -H 0.0.0.0"
+    ports:
+      - "3000:3000"
+    environment:
+      NODE_ENV: development
+      NEXT_PUBLIC_API_URL: http://localhost:8080
+      NEXT_PUBLIC_MERCURE_URL: http://localhost:3001/.well-known/mercure
+      API_URL_INTERNAL: http://backend:80
+      WATCHPACK_POLLING: "true"
+    volumes:
+      - ./frontend:/app
+      - frontend_node_modules:/app/node_modules
+    networks:
+      - app_network
+    depends_on:
+      - backend
+
+  # ── PostgreSQL ───────────────────────────────────────
+  database:
+    image: postgres:16-alpine
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_DB: draw
+      POSTGRES_USER: draw
+      POSTGRES_PASSWORD: draw
+    volumes:
+      - db_data:/var/lib/postgresql/data
+    networks:
+      - app_network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U draw"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  # ── Mercure Hub (real-time) ──────────────────────────
+  mercure:
+    image: dunglas/mercure
+    ports:
+      - "3001:80"
+    environment:
+      SERVER_NAME: ":80"
+      MERCURE_PUBLISHER_JWT_KEY: dev_mercure_secret_change_me
+      MERCURE_SUBSCRIBER_JWT_KEY: dev_mercure_secret_change_me
+      MERCURE_EXTRA_DIRECTIVES: |
+        cors_origins http://localhost:3000
+        anonymous
+    networks:
+      - app_network
+
+volumes:
+  db_data:
+  backend_uploads:
+  frontend_node_modules:
+
+networks:
+  app_network:
+    driver: bridge

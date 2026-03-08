@@ -1,0 +1,24 @@
+{
+	# Disable automatic HTTPS — Coolify's proxy handles TLS
+	auto_https off
+	# Enable FrankenPHP
+	frankenphp
+	# Set order for php_server
+	order php_server before file_server
+}
+
+:80 {
+	# Serve from /app/public
+	root * /app/public
+
+	# Upload size limit — 50MB to handle large file uploads
+	request_body {
+		max_size 50MB
+	}
+
+	# Compress responses
+	encode zstd gzip
+
+	# PHP handler — serves PHP files and falls back to index.php (Symfony front controller)
+	php_server
+}

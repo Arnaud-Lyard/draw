@@ -8,70 +8,84 @@ COPY composer.json composer.lock symfony.lock ./
 RUN composer install --no-dev --no-scripts --prefer-dist --no-interaction --no-progress
 
 # ============================================
-# Stage 2: Production image (FrankenPHP)
+# Stage 2: Production (php-fpm)
 # ============================================
-FROM dunglas/frankenphp:latest AS prod
+FROM php:8.2-fpm-alpine AS prod
 
-# Install PHP extensions required for the project
-RUN install-php-extensions \
+RUN apk add --no-cache \
+    curl \
+    icu-dev \
+    libzip-dev \
+    libpng-dev \
+    libjpeg-turbo-dev \
+    freetype-dev \
+    postgresql-dev \
+    linux-headers
+
+RUN docker-php-ext-configure gd --with-freetype --with-jpeg \
+    && docker-php-ext-install -j$(nproc) \
     pdo_pgsql \
     pgsql \
     intl \
     opcache \
     gd \
-    zip \
-    apcu
+    zip
 
-# Copy Caddy/PHP configuration
-COPY docker/Caddyfile /etc/caddy/Caddyfile
+RUN apk add --no-cache --virtual .build-deps $PHPIZE_DEPS \
+    && pecl install apcu \
+    && docker-php-ext-enable apcu \
+    && apk del .build-deps
+
 COPY docker/php.ini $PHP_INI_DIR/conf.d/app.ini
 
-# Set working directory
 WORKDIR /app
 
-# Copy application source
 COPY . .
-
-# Copy vendor from deps stage
 COPY --from=deps /app/vendor ./vendor
 
-# Create required directories and set permissions
 RUN mkdir -p var/cache var/log var/share \
-    && chown -R www-data:www-data var
+    && chown -R www-data:www-data var public
 
-# Warmup cache and dump autoloader
-RUN bin/console cache:warmup --env=prod || true \
-    && composer dump-autoload --classmap-authoritative --no-dev
+RUN php bin/console cache:warmup --env=prod || true \
+    && composer dump-autoload --classmap-authoritative --no-dev || true
 
-EXPOSE 80
+EXPOSE 9000
 
 # ============================================
-# Stage 3: Development image (FrankenPHP + Xdebug)
+# Stage 3: Development (php-fpm + xdebug)
 # ============================================
-FROM dunglas/frankenphp:latest AS dev
+FROM php:8.2-fpm-alpine AS dev
 
-# Install PHP extensions (same as prod + xdebug)
-RUN install-php-extensions \
+RUN apk add --no-cache \
+    curl \
+    icu-dev \
+    libzip-dev \
+    libpng-dev \
+    libjpeg-turbo-dev \
+    freetype-dev \
+    postgresql-dev \
+    linux-headers
+
+RUN docker-php-ext-configure gd --with-freetype --with-jpeg \
+    && docker-php-ext-install -j$(nproc) \
     pdo_pgsql \
     pgsql \
     intl \
     opcache \
     gd \
-    zip \
-    apcu \
-    xdebug
+    zip
 
-# Install Composer inside the dev image
+RUN apk add --no-cache --virtual .build-deps $PHPIZE_DEPS \
+    && pecl install apcu xdebug \
+    && docker-php-ext-enable apcu xdebug \
+    && apk del .build-deps
+
 COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
-
-# Copy Caddy configuration
-COPY docker/Caddyfile /etc/caddy/Caddyfile
 COPY docker/php.dev.ini $PHP_INI_DIR/conf.d/app.ini
 
 WORKDIR /app
 
-# Create required directories
 RUN mkdir -p var/cache var/log var/share \
     && chown -R www-data:www-data var
 
-EXPOSE 80
+EXPOSE 9000

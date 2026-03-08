@@ -1,6 +1,6 @@
 services:
-  # ── Symfony API (FrankenPHP) ──────────────────────────
-  backend:
+  # ── PHP-FPM (Symfony API) ────────────────────────────
+  php:
     build:
       context: ./backend
       dockerfile: Dockerfile
@@ -14,21 +14,34 @@ services:
       MERCURE_URL: http://mercure/.well-known/mercure
       MERCURE_PUBLIC_URL: ${MERCURE_PUBLIC_URL}
       MERCURE_JWT_SECRET: ${MERCURE_JWT_SECRET}
-      DEFAULT_URI: ${APP_URL}
+      DEFAULT_URI: ${BACKEND_URL}
       CORS_ALLOW_ORIGIN: ${FRONTEND_URL}
     volumes:
       - backend_uploads:/app/var/share
+      - backend_public:/app/public
     networks:
       - app_network
     depends_on:
       database:
         condition: service_healthy
+
+  # ── Nginx (reverse proxy → php-fpm) ─────────────────
+  nginx:
+    image: nginx:alpine
+    restart: unless-stopped
+    volumes:
+      - ./backend/docker/nginx.conf:/etc/nginx/conf.d/default.conf:ro
+      - backend_public:/app/public:ro
+    networks:
+      - app_network
+    depends_on:
+      - php
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:80/"]
       interval: 10s
       timeout: 5s
       retries: 3
-      start_period: 30s
+      start_period: 10s
 
   # ── Next.js Frontend ─────────────────────────────────
   frontend:
@@ -37,16 +50,16 @@ services:
       dockerfile: Dockerfile
       target: prod
       args:
-        NEXT_PUBLIC_API_URL: ${APP_URL}
+        NEXT_PUBLIC_API_URL: ${BACKEND_URL}
         NEXT_PUBLIC_MERCURE_URL: ${MERCURE_PUBLIC_URL}
     restart: unless-stopped
     environment:
       NODE_ENV: production
-      API_URL_INTERNAL: http://backend:80
+      API_URL_INTERNAL: http://nginx:80
     networks:
       - app_network
     depends_on:
-      - backend
+      - nginx
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:3000/"]
       interval: 10s
@@ -94,6 +107,7 @@ services:
 volumes:
   db_data:
   backend_uploads:
+  backend_public:
 
 networks:
   app_network:

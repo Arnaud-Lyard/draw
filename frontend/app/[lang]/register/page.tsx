@@ -1,5 +1,6 @@
 import { notFound } from "next/navigation";
 import { getDictionary, hasLocale } from "../dictionaries";
+import userService from "@/services/user.service";
 
 export default async function Register({
   params,

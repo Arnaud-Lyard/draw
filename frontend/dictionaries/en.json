@@ -1,0 +1,24 @@
+{
+  "login": {
+    "title": "Sign in to your account",
+    "email": "Email address",
+    "password": "Password",
+    "remember": "Remember me",
+    "forgotPassword": "Forgot password",
+    "submit": "Sign in",
+    "split": "Or continue with",
+    "prefix": "Not a member?",
+    "register": "Sign up"
+  },
+  "register": {
+    "title": "Create your account",
+    "username": "Username",
+    "email": "Email address",
+    "password": "Password",
+    "confirmPassword": "Confirm Password",
+    "submit": "Sign up",
+    "split": "Or register with",
+    "prefix": "Already have an account?",
+    "login": "Sign in here"
+  }
+}

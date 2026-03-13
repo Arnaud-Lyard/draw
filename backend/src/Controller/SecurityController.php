@@ -2,33 +2,73 @@
 
 namespace App\Controller;
 
+use App\Dto\User\RegisterUserDto;
 use App\Entity\User;
+use App\Enum\Role;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Attribute\MapRequestPayload;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Attribute\Route;
-use Symfony\Component\Security\Http\Attribute\CurrentUser;
 
 final class SecurityController extends AbstractController
 {
-    #[Route("/login", name: "login", methods: ["POST"])]
-    public function login(#[CurrentUser] ?User $user): Response
+    private $entityManager;
+
+    public function __construct(EntityManagerInterface $entityManager)
     {
-        if (null === $user) {
+        $this->entityManager = $entityManager;
+    }
+
+    #[Route("/api/me", name: "api_me", methods: ["GET"])]
+    public function me(): JsonResponse
+    {
+        $user = $this->getUser();
+
+        if (!$user) {
             return $this->json(
-                [
-                    "message" => "missing credentials",
-                ],
+                ["message" => "Not authenticated."],
                 Response::HTTP_UNAUTHORIZED,
             );
         }
-        $token = "token";
+
         return $this->json([
-            "user" => $user->getUserIdentifier(),
-            +"token" => $token,
+            "email" => $user->getUserIdentifier(),
+            "roles" => $user->getRoles(),
         ]);
     }
 
-    #[Route("/logout-redirect", name: "logout_redirect", methods: ["POST"])]
-    public function logout(): Response {}
+    #[Route("/api/register", name: "api_register", methods: ["POST"])]
+    public function register(
+        #[MapRequestPayload] RegisterUserDto $registerUserDto,
+        Request $request,
+        UserPasswordHasherInterface $passwordHasher,
+    ): JsonResponse {
+        $existingUser = $this->entityManager
+            ->getRepository(User::class)
+            ->findOneBy(["email" => $registerUserDto->email]);
+
+        if ($existingUser) {
+            return new JsonResponse(
+                ["message" => "success"],
+                Response::HTTP_OK,
+            );
+        }
+
+        $user = new User();
+        $user->setUsername($registerUserDto->username);
+        $user->setEmail($registerUserDto->email);
+        $user->setPassword(
+            $passwordHasher->hashPassword($user, $registerUserDto->password),
+        );
+        $user->setRoles([Role::RoleUser->value]);
+
+        $this->entityManager->persist($user);
+        $this->entityManager->flush();
+
+        return new JsonResponse(["message" => "success"], Response::HTTP_OK);
+    }
 }

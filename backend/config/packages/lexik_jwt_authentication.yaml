@@ -11,4 +11,4 @@ lexik_jwt_authentication:
             path: /
             domain: null
             secure: false
-            http_only: true
+            httpOnly: true

@@ -4,4 +4,7 @@ export interface ConfigurationProviderProps {
   children: ReactNode;
 }
 
-export type ConfigurationContextType = {};
+export type ConfigurationContextType = {
+  locale: string | null;
+  name: string | null;
+};

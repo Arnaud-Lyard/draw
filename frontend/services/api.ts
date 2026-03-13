@@ -1,26 +1,41 @@
-import { ERROR_MESSAGES } from "../constants/CustomError";
-import { getErrorMessage } from "../utils/getErrorMessage";
 import axios, { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
+import { toast } from "react-toastify";
+import { getErrorMessage } from "../utils/getErrorMessage";
+import { getLocale } from "@/utils/getLocale";
 
-axios.defaults.baseURL = process.env.EXPO_PUBLIC_SERVER_URL;
+axios.defaults.baseURL = process.env.NEXT_PUBLIC_API_URL;
 axios.defaults.withCredentials = true;
 
-axios.interceptors.response.use(
-  function (response) {
-    return response;
-  },
-  async function (error: AxiosError) {
-    if (!error.response) {
-      console.log({ type: "error", text1: ERROR_MESSAGES.NETWORK_ERROR });
-      return Promise.reject(new Error(ERROR_MESSAGES.NETWORK_ERROR));
-    }
-    const { status } = error.response;
+axios.interceptors.request.use((config) => {
+  const locale = getLocale();
 
-    const message = getErrorMessage(status);
-    console.log({ type: "error", text1: message });
-    if (status === 403 || 401) {
-      // redirect to login
+  config.headers["Accept-Language"] = locale;
+
+  return config;
+});
+
+axios.interceptors.response.use(
+  (response) => response,
+  async (error: AxiosError) => {
+    const locale = getLocale();
+    const status = error.response?.status;
+    const message = getErrorMessage(status, locale);
+
+    toast.error(message, {
+      position: "top-right",
+      autoClose: false,
+      hideProgressBar: false,
+      closeOnClick: false,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+    });
+
+    if (status === 401 || status === 403) {
+      window.location.href = "/login";
     }
+
     return Promise.reject(error);
   },
 );

@@ -1,6 +1,7 @@
 import { notFound } from "next/navigation";
 import { getDictionary, hasLocale } from "../dictionaries";
 import userService from "@/services/user.service";
+import RegisterForm from "@/components/RegisterForm";
 
 export default async function Register({
   params,
@@ -31,96 +32,7 @@ export default async function Register({
 
         <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-[480px]">
           <div className="bg-white px-6 py-12 shadow-sm sm:rounded-lg sm:px-12 dark:bg-gray-800/50 dark:shadow-none dark:outline dark:-outline-offset-1 dark:outline-white/10">
-            <form action="#" method="POST" className="space-y-6">
-              {/* --- Nom Complet --- */}
-              <div>
-                <label
-                  htmlFor="name"
-                  className="block text-sm/6 font-medium text-gray-900 dark:text-white"
-                >
-                  {dict.register.username}
-                </label>
-                <div className="mt-2">
-                  <input
-                    id="name"
-                    name="name"
-                    type="text"
-                    required
-                    autoComplete="name"
-                    className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-sky-600 sm:text-sm/6 dark:bg-white/5 dark:text-white dark:outline-white/10 dark:placeholder:text-gray-500 dark:focus:outline-sky-500"
-                  />
-                </div>
-              </div>
-
-              {/* --- Email --- */}
-              <div>
-                <label
-                  htmlFor="email"
-                  className="block text-sm/6 font-medium text-gray-900 dark:text-white"
-                >
-                  {dict.register.email}
-                </label>
-                <div className="mt-2">
-                  <input
-                    id="email"
-                    name="email"
-                    type="email"
-                    required
-                    autoComplete="email"
-                    className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-sky-600 sm:text-sm/6 dark:bg-white/5 dark:text-white dark:outline-white/10 dark:placeholder:text-gray-500 dark:focus:outline-sky-500"
-                  />
-                </div>
-              </div>
-
-              {/* --- Mot de passe --- */}
-              <div>
-                <label
-                  htmlFor="password"
-                  className="block text-sm/6 font-medium text-gray-900 dark:text-white"
-                >
-                  {dict.register.password}
-                </label>
-                <div className="mt-2">
-                  <input
-                    id="password"
-                    name="password"
-                    type="password"
-                    required
-                    autoComplete="new-password"
-                    className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-sky-600 sm:text-sm/6 dark:bg-white/5 dark:text-white dark:outline-white/10 dark:placeholder:text-gray-500 dark:focus:outline-sky-500"
-                  />
-                </div>
-              </div>
-
-              {/* --- Confirmation du mot de passe --- */}
-              <div>
-                <label
-                  htmlFor="confirm-password"
-                  className="block text-sm/6 font-medium text-gray-900 dark:text-white"
-                >
-                  {dict.register.confirmPassword}
-                </label>
-                <div className="mt-2">
-                  <input
-                    id="confirm-password"
-                    name="confirm-password"
-                    type="password"
-                    required
-                    autoComplete="new-password"
-                    className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-sky-600 sm:text-sm/6 dark:bg-white/5 dark:text-white dark:outline-white/10 dark:placeholder:text-gray-500 dark:focus:outline-sky-500"
-                  />
-                </div>
-              </div>
-
-              <div>
-                <button
-                  type="submit"
-                  className="flex w-full justify-center rounded-md bg-sky-600 px-3 py-1.5 text-sm/6 font-semibold text-white shadow-xs hover:bg-sky-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-sky-600 dark:bg-sky-500 dark:shadow-none dark:hover:bg-sky-400 dark:focus-visible:outline-sky-500"
-                >
-                  {dict.register.submit}
-                </button>
-              </div>
-            </form>
+            <RegisterForm dict={dict.register} lang={lang} />
 
             <div>
               <div className="mt-10 flex items-center gap-x-6">

@@ -6,7 +6,7 @@ import authService from "@/services/auth.service";
 
 interface LoginFormProps {
   dict: {
-    email: string;
+    username: string;
     password: string;
     remember: string;
     forgotPassword: string;
@@ -17,7 +17,7 @@ interface LoginFormProps {
 
 export default function LoginForm({ dict, lang }: LoginFormProps) {
   const router = useRouter();
-  const [email, setEmail] = useState("");
+  const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
 
@@ -26,7 +26,7 @@ export default function LoginForm({ dict, lang }: LoginFormProps) {
     setLoading(true);
 
     try {
-      await authService.login(email, password);
+      await authService.login(username, password);
       router.push(`/${lang}/dashboard`);
     } catch {
     } finally {
@@ -41,17 +41,17 @@ export default function LoginForm({ dict, lang }: LoginFormProps) {
           htmlFor="email"
           className="block text-sm/6 font-medium text-gray-900 dark:text-white"
         >
-          {dict.email}
+          {dict.username}
         </label>
         <div className="mt-2">
           <input
-            id="email"
-            name="email"
-            type="email"
+            id="username"
+            name="username"
+            type="text"
             required
-            autoComplete="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            autoComplete="username"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
             className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-sky-600 sm:text-sm/6 dark:bg-white/5 dark:text-white dark:outline-white/10 dark:placeholder:text-gray-500 dark:focus:outline-sky-500"
           />
         </div>

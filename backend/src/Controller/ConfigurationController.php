@@ -26,7 +26,7 @@ final class ConfigurationController extends AbstractController
         }
 
         return $this->json([
-            "name" => $config->getName(),
+            "name" => $config->getAppName(),
         ]);
     }
 }

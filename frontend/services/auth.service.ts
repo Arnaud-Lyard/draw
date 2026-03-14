@@ -2,12 +2,11 @@ import { LoginResponse, RegisterResponse } from "@/types/auth";
 import request from "./api";
 
 const authService = {
-  login: async (email: string, password: string): Promise<LoginResponse> => {
+  login: async (username: string, password: string): Promise<LoginResponse> => {
     const response = await request.post<LoginResponse>("/api/login_check", {
-      username: email,
+      username,
       password,
     });
-    console.log(response);
     return response;
   },
 

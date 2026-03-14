@@ -1,0 +1,3 @@
+email.registration.subject: "Confirmation d'inscription"
+email.welcome.title: "Bienvenue %username% !"
+email.welcome.message: "Veuillez confirmer votre inscription"

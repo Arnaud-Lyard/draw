@@ -5,10 +5,17 @@ lexik_jwt_authentication:
     token_ttl: 3600
 
     set_cookies:
-        bearer:
+        BEARER:
             lifetime: null
             samesite: lax
             path: /
             domain: null
             secure: false
             httpOnly: true
+
+    token_extractors:
+        cookie:
+            enabled: true
+            name: BEARER
+
+    remove_token_from_body_when_cookies_used: true

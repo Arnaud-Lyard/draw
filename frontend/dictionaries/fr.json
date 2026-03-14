@@ -1,7 +1,7 @@
 {
   "login": {
     "title": "Se connecter à mon compte",
-    "email": "Adresse e-mail",
+    "username": "Nom d'utilisateur",
     "password": "Mot de passe",
     "remember": "Se souvenir de moi",
     "forgotPassword": "Mot de passe oublié",
@@ -20,7 +20,14 @@
     "split": "Ou connectez-vous avec",
     "prefix": "Déjà inscrit ?",
     "login": "Se connecter",
-    "passwordMismatch": "Les mots de passe ne correspondent pas"
+    "passwordMismatch": "Les mots de passe ne correspondent pas",
+    "registerSuccess": "Inscription réussie. Vous allez recevoir un email de confirmation.",
+    "passwordStrength": "Force du mot de passe",
+    "strengthLabels": ["Trop court", "Faible", "Moyen", "Bon", "Excellent"],
+    "reqLength": "8+ caractères",
+    "reqUpper": "Une majuscule",
+    "reqNumber": "Un chiffre",
+    "reqSpecial": "Un caractère spécial"
   },
   "error": {
     "401": "Vous n'êtes pas autorisé à consulter cette page.",

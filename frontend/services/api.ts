@@ -8,7 +8,6 @@ axios.defaults.withCredentials = true;
 
 axios.interceptors.request.use((config) => {
   const locale = getLocale();
-
   config.headers["Accept-Language"] = locale;
 
   return config;
@@ -21,19 +20,16 @@ axios.interceptors.response.use(
     const status = error.response?.status;
     const message = getErrorMessage(status, locale);
 
-    toast.error(message, {
-      position: "top-right",
-      autoClose: false,
-      hideProgressBar: false,
-      closeOnClick: false,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-      theme: "light",
-    });
+    toast.error(message);
 
     if (status === 401 || status === 403) {
-      window.location.href = "/login";
+      // Éviter la boucle : ne pas rediriger si on est déjà sur login/register
+      const currentPath = window.location.pathname;
+      const isAuthPage =
+        currentPath.includes("/login") || currentPath.includes("/register");
+      if (!isAuthPage) {
+        window.location.href = "/login";
+      }
     }
 
     return Promise.reject(error);

@@ -50,6 +50,43 @@
       "signOut": "Se deconnecter"
     }
   },
+  "app": {
+    "nav": {
+      "home": "Accueil",
+      "team": "Equipe",
+      "projects": "Projets",
+      "calendar": "Calendrier"
+    },
+    "notifications": "Voir les notifications",
+    "openMenu": "Ouvrir le menu principal",
+    "userNav": {
+      "profile": "Votre profil",
+      "settings": "Parametres",
+      "signOut": "Se deconnecter"
+    }
+  },
+  "home": {
+    "hero": {
+      "title": "Organisez vos tournois",
+      "subtitle": "Une plateforme auto-hebergee pour gerer les tableaux, equipes et calendriers.",
+      "cta": "Commencer",
+      "ctaSecondary": "Se connecter"
+    },
+    "features": {
+      "tournaments": {
+        "title": "Tournois",
+        "description": "Creez et gerez des tableaux, poules et phases eliminatoires facilement."
+      },
+      "teams": {
+        "title": "Equipes",
+        "description": "Invitez des joueurs, organisez vos effectifs et suivez les performances."
+      },
+      "calendar": {
+        "title": "Calendrier",
+        "description": "Planifiez les matchs, fixez les echeances et ne ratez aucun evenement."
+      }
+    }
+  },
   "error": {
     "401": "Vous n'êtes pas autorisé à consulter cette page.",
     "403": "Vous n'avez pas la permission d'effectuer cette action.",

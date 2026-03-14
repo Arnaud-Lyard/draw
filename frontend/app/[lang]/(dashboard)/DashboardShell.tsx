@@ -70,11 +70,11 @@ interface DashboardShellProps {
 export default function DashboardShell({ dict, lang, children }: DashboardShellProps) {
   const [sidebarOpen, setSidebarOpen] = useState(false)
   const pathname = usePathname()
-  const transalations = dict.dashboard
+  const translations = dict.dashboard
 
   const userNavigation = [
-    { name: transalations.userNav.profile, href: '#' },
-    { name: transalations.userNav.signOut, href: '#' },
+    { name: translations.userNav.profile, href: '#' },
+    { name: translations.userNav.signOut, href: '#' },
   ]
 
   return (
@@ -94,7 +94,7 @@ export default function DashboardShell({ dict, lang, children }: DashboardShellP
               <TransitionChild>
                 <div className="absolute top-0 left-full flex w-16 justify-center pt-5 duration-300 ease-in-out data-closed:opacity-0">
                   <button type="button" onClick={() => setSidebarOpen(false)} className="-m-2.5 p-2.5">
-                    <span className="sr-only">{transalations.closeSidebar}</span>
+                    <span className="sr-only">{translations.closeSidebar}</span>
                     <XMarkIcon aria-hidden="true" className="size-6 text-white" />
                   </button>
                 </div>
@@ -133,14 +133,14 @@ export default function DashboardShell({ dict, lang, children }: DashboardShellP
                                   'size-6 shrink-0',
                                 )}
                               />
-                              {transalations.nav[item.key]}
+                              {translations.nav[item.key]}
                             </a>
                           </li>
                         ))}
                       </ul>
                     </li>
                     <li>
-                      <div className="text-xs/6 font-semibold text-sky-200 dark:text-sky-100">{transalations.teams}</div>
+                      <div className="text-xs/6 font-semibold text-sky-200 dark:text-sky-100">{translations.teams}</div>
                       <ul role="list" className="-mx-2 mt-2 space-y-1">
                         {teams.map((team) => (
                           <li key={team.name}>
@@ -171,7 +171,7 @@ export default function DashboardShell({ dict, lang, children }: DashboardShellP
                           aria-hidden="true"
                           className="size-6 shrink-0 text-sky-200 group-hover:text-white dark:text-sky-100"
                         />
-                        {transalations.settings}
+                        {translations.settings}
                       </a>
                     </li>
                   </ul>
@@ -216,14 +216,14 @@ export default function DashboardShell({ dict, lang, children }: DashboardShellP
                               'size-6 shrink-0',
                             )}
                           />
-                          {transalations.nav[item.key]}
+                          {translations.nav[item.key]}
                         </a>
                       </li>
                     ))}
                   </ul>
                 </li>
                 <li>
-                  <div className="text-xs/6 font-semibold text-sky-200 dark:text-sky-100">{transalations.teams}</div>
+                  <div className="text-xs/6 font-semibold text-sky-200 dark:text-sky-100">{translations.teams}</div>
                   <ul role="list" className="-mx-2 mt-2 space-y-1">
                     {teams.map((team) => (
                       <li key={team.name}>
@@ -254,7 +254,7 @@ export default function DashboardShell({ dict, lang, children }: DashboardShellP
                       aria-hidden="true"
                       className="size-6 shrink-0 text-sky-200 group-hover:text-white dark:text-sky-100"
                     />
-                    {transalations.settings}
+                    {translations.settings}
                   </a>
                 </li>
               </ul>
@@ -269,7 +269,7 @@ export default function DashboardShell({ dict, lang, children }: DashboardShellP
               onClick={() => setSidebarOpen(true)}
               className="-m-2.5 p-2.5 text-gray-700 hover:text-gray-900 lg:hidden dark:text-gray-400 dark:hover:text-white"
             >
-              <span className="sr-only">{transalations.openSidebar}</span>
+              <span className="sr-only">{translations.openSidebar}</span>
               <Bars3Icon aria-hidden="true" className="size-6" />
             </button>
 
@@ -280,8 +280,8 @@ export default function DashboardShell({ dict, lang, children }: DashboardShellP
               <form action="#" method="GET" className="grid flex-1 grid-cols-1">
                 <input
                   name="search"
-                  placeholder={transalations.search}
-                  aria-label={transalations.search}
+                  placeholder={translations.search}
+                  aria-label={translations.search}
                   className="col-start-1 row-start-1 block size-full bg-white pl-8 text-base text-gray-900 outline-hidden placeholder:text-gray-400 sm:text-sm/6 dark:bg-gray-900 dark:text-white dark:placeholder:text-gray-500"
                 />
                 <MagnifyingGlassIcon
@@ -294,7 +294,7 @@ export default function DashboardShell({ dict, lang, children }: DashboardShellP
                   type="button"
                   className="-m-2.5 p-2.5 text-gray-400 hover:text-gray-500 dark:text-gray-400 dark:hover:text-white"
                 >
-                  <span className="sr-only">{transalations.notifications}</span>
+                  <span className="sr-only">{translations.notifications}</span>
                   <BellIcon aria-hidden="true" className="size-6" />
                 </button>
 
@@ -308,7 +308,7 @@ export default function DashboardShell({ dict, lang, children }: DashboardShellP
                 <Menu as="div" className="relative">
                   <MenuButton className="relative flex items-center">
                     <span className="absolute -inset-1.5" />
-                    <span className="sr-only">{transalations.openUserMenu}</span>
+                    <span className="sr-only">{translations.openUserMenu}</span>
                     <img
                       alt=""
                       src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"

@@ -29,6 +29,27 @@
     "reqNumber": "Un chiffre",
     "reqSpecial": "Un caractère spécial"
   },
+  "dashboard": {
+    "nav": {
+      "dashboard": "Tableau de bord",
+      "team": "Equipe",
+      "projects": "Projets",
+      "calendar": "Calendrier",
+      "documents": "Documents",
+      "reports": "Rapports"
+    },
+    "teams": "Vos equipes",
+    "settings": "Parametres",
+    "search": "Rechercher",
+    "notifications": "Voir les notifications",
+    "openSidebar": "Ouvrir le menu",
+    "closeSidebar": "Fermer le menu",
+    "openUserMenu": "Ouvrir le menu utilisateur",
+    "userNav": {
+      "profile": "Votre profil",
+      "signOut": "Se deconnecter"
+    }
+  },
   "error": {
     "401": "Vous n'êtes pas autorisé à consulter cette page.",
     "403": "Vous n'avez pas la permission d'effectuer cette action.",

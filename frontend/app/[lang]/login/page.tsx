@@ -1,6 +1,7 @@
 import { notFound } from "next/navigation";
 import { getDictionary, hasLocale } from "../dictionaries";
 import LoginForm from "@/components/LoginForm";
+import Link from "next/link";
 
 export default async function Login({ params }: PageProps<"/[lang]/login">) {
   const { lang } = await params;
@@ -100,12 +101,12 @@ export default async function Login({ params }: PageProps<"/[lang]/login">) {
 
           <p className="mt-10 text-center text-sm/6 text-gray-500 dark:text-gray-400">
             {dict.login.prefix}{" "}
-            <a
+            <Link
               href="/register"
               className="font-semibold text-sky-600 hover:text-sky-500 dark:text-sky-400 dark:hover:text-sky-300"
             >
               {dict.login.register}
-            </a>
+            </Link>
           </p>
         </div>
       </div>

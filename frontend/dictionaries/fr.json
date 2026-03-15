@@ -63,6 +63,10 @@
       "profile": "Votre profil",
       "settings": "Parametres",
       "signOut": "Se deconnecter"
+    },
+    "unauthenticatedNav": {
+      "login": "Connexion",
+      "register": "Inscription"
     }
   },
   "home": {

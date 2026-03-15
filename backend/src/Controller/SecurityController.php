@@ -32,14 +32,17 @@ final class SecurityController extends AbstractController
         $user = $this->getUser();
         if (!$user) {
             return $this->json(
-                ["message" => "Not authenticated."],
-                Response::HTTP_UNAUTHORIZED,
+                ["user" => null],
+                Response::HTTP_OK,
             );
         }
 
         return $this->json([
-            "email" => $user->getUserIdentifier(),
-            "roles" => $user->getRoles(),
+            "user" => [
+                "email" => $user->getUserIdentifier(),
+                "roles" => $user->getRoles(),
+            ],
+            Response::HTTP_OK,
         ]);
     }
 

@@ -38,7 +38,7 @@ export default function LoginForm({ dict, lang }: LoginFormProps) {
     <form onSubmit={handleSubmit} className="space-y-6">
       <div>
         <label
-          htmlFor="email"
+          htmlFor="username"
           className="block text-sm/6 font-medium text-gray-900 dark:text-white"
         >
           {dict.username}

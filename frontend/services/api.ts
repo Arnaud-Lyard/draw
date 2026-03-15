@@ -18,18 +18,13 @@ axios.interceptors.response.use(
   async (error: AxiosError) => {
     const locale = getLocale();
     const status = error.response?.status;
-    const message = getErrorMessage(status, locale);
+    const requestUrl = error.config?.url || "";
 
-    toast.error(message);
+    const isLogout = requestUrl.includes("/api/logout");
 
-    if (status === 401 || status === 403) {
-      // Éviter la boucle : ne pas rediriger si on est déjà sur login/register
-      const currentPath = window.location.pathname;
-      const isAuthPage =
-        currentPath.includes("/login") || currentPath.includes("/register");
-      if (!isAuthPage) {
-        window.location.href = "/login";
-      }
+    if (!isLogout) {
+      const message = getErrorMessage(status, locale);
+      toast.error(message);
     }
 
     return Promise.reject(error);

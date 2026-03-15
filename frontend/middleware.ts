@@ -6,35 +6,40 @@ import type { NextRequest } from "next/server";
 const locales: string[] = ["en", "fr"];
 const defaultLocale: string = "en";
 
-// Get the preferred locale, similar to the above or using a library
 function getLocale(request: NextRequest) {
-  // On récupère les headers de la requête entrante
   const negotiatorHeaders: Record<string, string> = {};
   request.headers.forEach((value, key) => (negotiatorHeaders[key] = value));
 
   const languages = new Negotiator({ headers: negotiatorHeaders }).languages();
 
-  // On trouve la meilleure correspondance entre les préférences utilisateur et nos locales
   return match(languages, locales, defaultLocale);
 }
 
 export function middleware(request: NextRequest) {
-  // Check if there is any supported locale in the pathname
   const { pathname } = request.nextUrl;
+
   const pathnameHasLocale = locales.some(
-    (locale) => pathname.startsWith(`/${locale}/`) || pathname === `/${locale}`,
+    (locale) => pathname.startsWith(`/${locale}/`) || pathname === `/${locale}`
   );
 
-  if (pathnameHasLocale) return;
+  if (!pathnameHasLocale) {
+    const locale = getLocale(request);
+    request.nextUrl.pathname = `/${locale}${pathname}`;
+    return NextResponse.redirect(request.nextUrl);
+  }
 
-  // Redirect if there is no locale
-  const locale = getLocale(request);
-  request.nextUrl.pathname = `/${locale}${pathname}`;
-  // e.g. incoming request is /products
-  // The new URL is now /en-US/products
-  return NextResponse.redirect(request.nextUrl);
+  const currentLocale = pathname.split('/')[1];
+  const token = request.cookies.get('BEARER');
+
+  const isProtectedRoute = pathname.startsWith(`/${currentLocale}/dashboard`);
+
+  if (isProtectedRoute && !token) {
+    const loginUrl = new URL(`/${currentLocale}/login`, request.url);
+    return NextResponse.redirect(loginUrl);
+  }
+
+  return NextResponse.next();
 }
-
 export const config = {
   matcher: [
     // Skip all internal paths (_next)

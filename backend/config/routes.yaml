@@ -9,5 +9,8 @@
 api_login_check:
     path: /api/login_check
 
+app_logout:
+    path: /api/logout
+
 controllers:
     resource: routing.controllers

@@ -14,19 +14,17 @@ security:
                 check_path: /api/login_check
                 success_handler: lexik_jwt_authentication.handler.authentication_success
                 failure_handler: lexik_jwt_authentication.handler.authentication_failure
-        public_api:
-            pattern: ^/api/configuration
-            security: false
         api:
             pattern: ^/api
             stateless: true
             jwt: ~
+            logout:
+                path: app_logout
 
     access_control:
         - { path: ^/api/login, roles: PUBLIC_ACCESS }
         - { path: ^/api/register, roles: PUBLIC_ACCESS }
-        - { path: ^/api/configuration, roles: PUBLIC_ACCESS }
-        - { path: ^/api/me, roles: IS_AUTHENTICATED_FULLY }
+        - { path: ^/api/me, roles: PUBLIC_ACCESS }
         - { path: ^/api, roles: IS_AUTHENTICATED_FULLY }
 
 when@test:

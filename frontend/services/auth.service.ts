@@ -29,10 +29,8 @@ const authService = {
     });
   },
 
-  logout: () => {},
-
-  me: async (): Promise<MeResponse> => {
-    return request.get<MeResponse>("/api/me");
+  logout: async () => {
+    return request.post("/api/logout", {});
   },
 };
 

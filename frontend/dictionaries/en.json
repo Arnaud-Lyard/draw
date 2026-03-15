@@ -63,6 +63,10 @@
       "profile": "Your profile",
       "settings": "Settings",
       "signOut": "Sign out"
+    },
+    "unauthenticatedNav": {
+      "login": "Login",
+      "register": "Register"
     }
   },
   "home": {

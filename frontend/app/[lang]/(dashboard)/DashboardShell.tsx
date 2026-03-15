@@ -25,6 +25,7 @@ import {
   XMarkIcon,
 } from '@heroicons/react/24/outline'
 import { ChevronDownIcon, MagnifyingGlassIcon } from '@heroicons/react/20/solid'
+import { useUser } from '@/hooks/useUser'
 
 const navigationItems = [
   { key: 'dashboard' as const, href: 'dashboard', icon: HomeIcon },
@@ -76,6 +77,8 @@ export default function DashboardShell({ dict, lang, children }: DashboardShellP
     { name: translations.userNav.profile, href: '#' },
     { name: translations.userNav.signOut, href: '#' },
   ]
+
+  const { user } = useUser();
 
   return (
     <>

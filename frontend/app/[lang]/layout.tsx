@@ -1,4 +1,4 @@
-import { ConfigurationProvider } from "@/contexts/ConfigurationContext";
+import { UserProvider } from "@/contexts/UserContext";
 import { ToastContainer, toast } from "react-toastify";
 
 export default async function LangLayout({
@@ -7,9 +7,9 @@ export default async function LangLayout({
   children: React.ReactNode;
 }) {
   return (
-    <ConfigurationProvider>
+    <UserProvider>
       {children}
       <ToastContainer />
-    </ConfigurationProvider>
+    </UserProvider>
   );
 }

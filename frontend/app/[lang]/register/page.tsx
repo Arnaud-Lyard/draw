@@ -2,6 +2,7 @@ import { notFound } from "next/navigation";
 import { getDictionary, hasLocale } from "../dictionaries";
 import userService from "@/services/user.service";
 import RegisterForm from "@/components/RegisterForm";
+import Link from "next/link";
 
 export default async function Register({
   params,
@@ -94,12 +95,12 @@ export default async function Register({
 
           <p className="mt-10 text-center text-sm/6 text-gray-500 dark:text-gray-400">
             {dict.register.prefix}{" "}
-            <a
+            <Link
               href="/login"
               className="font-semibold text-sky-600 hover:text-sky-500 dark:text-sky-400 dark:hover:text-sky-300"
             >
               {dict.register.login}
-            </a>
+            </Link>
           </p>
         </div>
       </div>
